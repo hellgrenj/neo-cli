@@ -9,3 +9,6 @@ export const numberOfHazardousObjects = (neos: any): number => {
     ).length
     : 0;
 };
+export const consideredPotentiallyHazardous = (nearEarthObject: any) : boolean => {
+    return nearEarthObject.is_potentially_hazardous_asteroid
+}

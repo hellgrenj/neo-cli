@@ -1,4 +1,7 @@
-import { numberOfHazardousObjects } from "../core/hazard/mod.ts";
+import {
+  numberOfHazardousObjects,
+  consideredPotentiallyHazardous,
+} from "../core/hazard/mod.ts";
 import {
   closestToEarth,
   kilometersToScandinavianMiles,
@@ -6,6 +9,7 @@ import {
 import { timesThruSweden } from "../core/distance/mod.ts";
 import * as c from "https://deno.land/std@v0.58.0/fmt/colors.ts";
 import { readLines } from "https://deno.land/std@v0.58.0/io/bufio.ts";
+import { estimatedDiameterInMeters } from "../core/size/mod.ts";
 
 const API_KEY = Deno.env.get("API_KEY") ? Deno.env.get("API_KEY") : "DEMO_KEY";
 
@@ -43,7 +47,7 @@ const nearEarthObjectsBetweenDates = async () => {
     `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=${API_KEY}`;
   const res = await fetch(url);
   const response = await res.json();
- // console.log(Deno.inspect(response, { depth: 10 }));
+  // console.log(Deno.inspect(response, { depth: 10 }));
   if (res.status !== 200) {
     await printWarning("error");
     await printWarning(response.error_message);
@@ -75,6 +79,19 @@ const nearEarthObjectsBetweenDates = async () => {
     `thats like driving thru Sweden ${
       timesThruSweden(closestDistanceInKm)
     } times`,
+  );
+  const [minDia, maxDia] = estimatedDiameterInMeters(
+    closestNearEarthObjectInResponse,
+  );
+  console.log(
+    `its estimated to be between ${minDia} and ${maxDia} meters in diameter`,
+  );
+  console.log(
+    `this object (the closest one) is ${
+      consideredPotentiallyHazardous(closestNearEarthObjectInResponse)
+        ? ""
+        : "NOT"
+    } considered potentially hazardous`,
   );
 };
 
