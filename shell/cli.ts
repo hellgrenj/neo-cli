@@ -10,6 +10,7 @@ import { timesThruSweden } from "../core/distance/mod.ts";
 import * as c from "https://deno.land/std@v0.58.0/fmt/colors.ts";
 import { readLines } from "https://deno.land/std@v0.58.0/io/bufio.ts";
 import { estimatedDiameterInMeters } from "../core/size/mod.ts";
+import { relativeVelocity } from "../core/velocity/mod.ts";
 
 const API_KEY = Deno.env.get("API_KEY") ? Deno.env.get("API_KEY") : "DEMO_KEY";
 
@@ -42,24 +43,16 @@ const nearEarthObjectsBetweenDates = async () => {
   printHeaderSync(`(a) NEO's between dates`);
   const startDate = await prompt("Enter start date:");
   const endDate = await prompt("Enter end date (limit 7 days):");
-
   const url =
     `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=${API_KEY}`;
   const res = await fetch(url);
   const response = await res.json();
-  // console.log(Deno.inspect(response, { depth: 10 }));
   if (res.status !== 200) {
     await printWarning("error");
     await printWarning(response.error_message);
     console.log(res);
     Deno.exit();
   }
-  console.log(response.element_count, c.green("objects found"));
-  console.log(
-    `number of hazardous objects is ${
-      numberOfHazardousObjects(response.near_earth_objects)
-    }`,
-  );
 
   const closestNearEarthObjectInResponse = closestToEarth(
     response.near_earth_objects,
@@ -68,33 +61,58 @@ const nearEarthObjectsBetweenDates = async () => {
     closestNearEarthObjectInResponse.close_approach_data[0].miss_distance
       .kilometers,
   );
-  console.log(
-    `closest one passed just ${closestDistanceInKm} km from earth or ${
-      kilometersToScandinavianMiles(
-        closestDistanceInKm,
-      )
-    } scandinavian miles (mil)`,
-  );
-  console.log(
-    `thats like driving thru Sweden ${
-      timesThruSweden(closestDistanceInKm)
-    } times`,
-  );
   const [minDia, maxDia] = estimatedDiameterInMeters(
     closestNearEarthObjectInResponse,
   );
-  console.log(
-    `its estimated to be between ${minDia} and ${maxDia} meters in diameter`,
+  const [kmPerSecond, kmPerHour] = relativeVelocity(
+    closestNearEarthObjectInResponse,
   );
+  console.log("");
   console.log(
-    `this object (the closest one) is ${
+    `In total ${
+      c.green(response.element_count.toString())
+    } objects where found and ${
+      c.red(
+        numberOfHazardousObjects(
+          response.near_earth_objects,
+        ).toString(),
+      )
+    } where considered hazardous.
+    
+The closest one passed just ${
+      c.yellow(
+        printPrettyNumber(closestDistanceInKm),
+      )
+    } km from earth (${
+      c.yellow(
+        printPrettyNumber(kilometersToScandinavianMiles(
+          closestDistanceInKm,
+        )),
+      )
+    } scandinavian miles)
+thats like driving thru Sweden ${
+      c.green(timesThruSweden(closestDistanceInKm).toString())
+    } times
+    
+its estimated to be between ${c.green(minDia.toString())} and ${
+      c.green(maxDia.toString())
+    } meters in diameter travelling at a speed (relative to us) 
+of ${c.yellow(printPrettyNumber(kmPerSecond))} km per second (${
+      c.yellow(printPrettyNumber(kmPerHour))
+    } km per hour)
+    
+this object (the closest one) is ${
       consideredPotentiallyHazardous(closestNearEarthObjectInResponse)
-        ? ""
-        : "NOT"
-    } considered potentially hazardous`,
+        ? c.red("(!)")
+        : c.green("NOT")
+    } considered potentially hazardous
+    `.trim(),
   );
 };
 
+const printPrettyNumber = (n: number): string => {
+  return n.toString().replace(/(\d)(?=(\d{3})+$)/g, "$1 ");
+};
 const prompt = async (question: string) => {
   await Deno.stdout.write(
     new TextEncoder().encode(c.blue(c.bgBlack(question))),

@@ -17,3 +17,9 @@
 //     orbiting_body: "Earth"
 //   }
 // ],
+export const relativeVelocity = (neo: any): [number, number] => {
+  return [
+    Math.round(neo.close_approach_data[0].relative_velocity.kilometers_per_second),
+    Math.round(neo.close_approach_data[0].relative_velocity.kilometers_per_hour),
+  ];
+};
