@@ -36,7 +36,7 @@ const nearEarthObjectsBetweenDates = async () => {
     `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=DEMO_KEY`;
   const res = await fetch(url);
   const response = await res.json();
-  console.log(response)
+  console.log(Deno.inspect(response, {depth:10}))
   if (res.status !== 200) {
     await printWarning("error");
     await printWarning(response.error_message);
