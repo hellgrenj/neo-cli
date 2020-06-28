@@ -27,6 +27,12 @@ export const nearEarthObjectsBetweenDates = async () => {
   console.log(c.gray(`(using API_KEY ${API_KEY})`));
   const startDate = Deno.args[1];
   const endDate = Deno.args[2];
+  const response = await fetchNearEarthObjects(startDate, endDate);
+  console.log(createReport(response));
+  const closest = closestToEarth(response.near_earth_objects);
+  await checkHighscore(closest);
+};
+const fetchNearEarthObjects = async (startDate: string, endDate: string) => {
   console.log(
     c.gray(`fetching near earth objects between ${startDate} and ${endDate}`),
   );
@@ -41,10 +47,5 @@ export const nearEarthObjectsBetweenDates = async () => {
     console.log(res);
     Deno.exit();
   }
-
-  const closest = closestToEarth(
-    response.near_earth_objects,
-  );
-  console.log(createReport(response, closest));
-  await checkHighscore(closest);
+  return response;
 };

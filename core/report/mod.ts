@@ -1,6 +1,7 @@
 import {
   kilometersToScandinavianMiles,
   timesThruSweden,
+  closestToEarth,
 } from "../distance/mod.ts";
 import { estimatedDiameterInMeters } from "../size/mod.ts";
 import { relativeVelocity } from "../velocity/mod.ts";
@@ -9,18 +10,27 @@ import {
   numberOfHazardousObjects,
   consideredPotentiallyHazardous,
 } from "../hazard/mod.ts";
-import { NearEarthObject } from "../_types/nearEarthObject.ts";
 
-export const createReport = (response: any, closestNearEarthObjectInResponse: NearEarthObject) => {
+
+/** 
+takes a response from the NEO WS API and returns a report
+@param {any} response - the API Response
+@returns {[string, NearEarthObject]} - the report 
+*/
+export const createReport = (
+  response: any,
+): string => {
+  const closest = closestToEarth(response.near_earth_objects);
+
   const closestDistanceInKm = Math.round(
-    closestNearEarthObjectInResponse.close_approach_data[0].miss_distance
+    closest.close_approach_data[0].miss_distance
       .kilometers,
   );
   const [minDia, maxDia] = estimatedDiameterInMeters(
-    closestNearEarthObjectInResponse,
+    closest,
   );
   const [kmPerSecond, kmPerHour] = relativeVelocity(
-    closestNearEarthObjectInResponse,
+    closest,
   );
 
   return `In total ${
@@ -56,9 +66,7 @@ of ${c.yellow(formatNumberString(kmPerSecond))} km per second (${
   } km per hour)
         
 this object (the closest one) is ${
-    consideredPotentiallyHazardous(closestNearEarthObjectInResponse)
-      ? c.red("(!)")
-      : c.green("NOT")
+    consideredPotentiallyHazardous(closest) ? c.red("(!)") : c.green("NOT")
   } considered potentially hazardous
         `.trim();
 };
