@@ -35,3 +35,16 @@ export const timesThruSweden = (kilometer: number): number => {
   const lengthOfSwedenInKm = 1572;
   return Math.round(kilometer / lengthOfSwedenInKm);
 };
+/** 
+returns wheter or not current closest neo is closer than the provided highscore neo
+@param {NearEarthObject} current
+@param {NearEarthObject} highscore
+@returns {boolean} - wheter or not current was closer than highscore
+*/
+export const closerThanHighscore = (
+  current: NearEarthObject,
+  highscore: NearEarthObject,
+): boolean => {
+  return Math.round(current.close_approach_data[0].miss_distance.kilometers) <
+    Math.round(highscore.close_approach_data[0].miss_distance.kilometers);
+};

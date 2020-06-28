@@ -6,10 +6,13 @@ import {
 import {
   closestToEarth,
   kilometersToScandinavianMiles,
+  closerThanHighscore,
 } from "../core/distance/mod.ts";
 import { timesThruSweden } from "../core/distance/mod.ts";
 import { estimatedDiameterInMeters } from "../core/size/mod.ts";
 import { relativeVelocity } from "../core/velocity/mod.ts";
+import { NearEarthObject } from "../core/_types/nearEarthObject.ts";
+import { load, save, FILE_PATH_NAME } from "./highscore.ts";
 
 const API_KEY = Deno.env.get("API_KEY") ? Deno.env.get("API_KEY") : "DEMO_KEY";
 
@@ -61,6 +64,26 @@ export const nearEarthObjectsBetweenDates = async () => {
   const [kmPerSecond, kmPerHour] = relativeVelocity(
     closestNearEarthObjectInResponse,
   );
+  printResult(
+    response,
+    closestDistanceInKm,
+    minDia,
+    maxDia,
+    kmPerHour,
+    kmPerSecond,
+    closestNearEarthObjectInResponse,
+  );
+  await updateHighscore(closestNearEarthObjectInResponse);
+};
+const printResult = (
+  response: any,
+  closestDistanceInKm: number,
+  minDia: number,
+  maxDia: number,
+  kmPerHour: number,
+  kmPerSecond: number,
+  closestNearEarthObjectInResponse: NearEarthObject,
+) => {
   console.log(
     `In total ${
       c.green(response.element_count.toString())
@@ -102,7 +125,28 @@ this object (the closest one) is ${
     `.trim(),
   );
 };
-
 const printPrettyNumber = (n: number): string => {
   return n.toString().replace(/(\d)(?=(\d{3})+$)/g, "$1 ");
+};
+const updateHighscore = async (
+  closestNearEarthObjectInResponse: NearEarthObject,
+) => {
+  const currHighscore = await load();
+  if (currHighscore) {
+    const newTitleHolder = closerThanHighscore(
+      closestNearEarthObjectInResponse,
+      currHighscore,
+    );
+    if (newTitleHolder) {
+      console.log(
+        c.gray(
+          `(this is the closest NEO you have ever fetched, updating ${FILE_PATH_NAME}`,
+        ),
+      );
+      await save(closestNearEarthObjectInResponse);
+    }
+  } else {
+    // first execution
+    await save(closestNearEarthObjectInResponse);
+  }
 };
