@@ -10,7 +10,7 @@ export const numberOfHazardousObjects = (apiResponseObject: any): number => {
   return pipe(extractNeos, filterPotentiallyHazardous)(apiResponseObject);
 };
 const filterPotentiallyHazardous = (neos: NearEarthObject[]): number => {
-  return neos.filter((n: any) => n.is_potentially_hazardous_asteroid).length;
+  return neos.filter((n: any) => consideredPotentiallyHazardous(n)).length;
 };
 /** 
 checks wether or not a near earth object is considered hazardouz
