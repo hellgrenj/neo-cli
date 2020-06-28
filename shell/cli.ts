@@ -48,7 +48,6 @@ export const nearEarthObjectsBetweenDates = async () => {
     console.log(res);
     Deno.exit();
   }
-
   const closestNearEarthObjectInResponse = closestToEarth(
     response.near_earth_objects,
   );

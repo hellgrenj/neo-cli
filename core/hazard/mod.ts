@@ -15,6 +15,8 @@ checks wether or not a near earth object is considered hazardouz
 @param {any} nearEarthObject - the near earth object
 @returns {boolean} - hazardous or not
 */
-export const consideredPotentiallyHazardous = (nearEarthObject: any) : boolean => {
-    return nearEarthObject.is_potentially_hazardous_asteroid
-}
+export const consideredPotentiallyHazardous = (
+  nearEarthObject: any,
+): boolean => {
+  return nearEarthObject.is_potentially_hazardous_asteroid;
+};
