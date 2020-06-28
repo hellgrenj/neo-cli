@@ -2,24 +2,16 @@ import {
   assertEquals,
 } from "https://deno.land/std/testing/asserts.ts";
 import {
-  kilometersToScandinavianMiles,
-  timesThruSweden,
-  closestToEarth,
+  NearEarthObject,
+  CloseApproachData,
+  EstimatedDiameter,
+} from "../_types/nearEarthObject.ts";
+import {
+  consideredPotentiallyHazardous,
+  numberOfHazardousObjects,
 } from "./mod.ts";
 
-Deno.test("kilometersToScandinavianMiles() returns 1 if given 10 kilometers", () => {
-  const kilometers = 10;
-  const scandinavianMiles = kilometersToScandinavianMiles(kilometers);
-  assertEquals(scandinavianMiles, 1);
-});
-
-Deno.test("timesThruSweden() returns 127 if given 200 000 kilometers", () => {
-  const kilometers = 200000;
-  const trips = timesThruSweden(kilometers);
-  assertEquals(trips, 127);
-});
-
-Deno.test("closesToEarth() returns the near earth object closest to earth in the API Response", () => {
+Deno.test("numberOfHazardousObjects() returns number of hazardous objects in a api response", () => {
   const apiResponse = {
     "2020-06-28": [
       {
@@ -98,7 +90,7 @@ Deno.test("closesToEarth() returns the near earth object closest to earth in the
             estimated_diameter_max: 109.3012251627,
           },
         },
-        is_potentially_hazardous_asteroid: false,
+        is_potentially_hazardous_asteroid: true,
         close_approach_data: [
           {
             close_approach_date: "2020-06-28",
@@ -122,9 +114,15 @@ Deno.test("closesToEarth() returns the near earth object closest to earth in the
       },
     ],
   };
-  const closestNearEarthObject = closestToEarth(apiResponse);
-  assertEquals(
-    closestNearEarthObject.close_approach_data[0].miss_distance.kilometers,
-    "759067.117152861",
-  );
+  const noHazardousObjects = numberOfHazardousObjects(apiResponse);
+  assertEquals(noHazardousObjects, 1);
+});
+
+Deno.test("consideredPotentiallyHazardous() returns wether or not a NEO is considered hazardous", () => {
+  const neo = {} as NearEarthObject;
+  neo.close_approach_data = [{} as CloseApproachData];
+  neo.estimated_diameter = {} as EstimatedDiameter;
+  neo.is_potentially_hazardous_asteroid = true;
+  const hazardous = consideredPotentiallyHazardous(neo);
+  assertEquals(hazardous, true);
 });

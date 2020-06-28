@@ -3,7 +3,7 @@ export interface NearEarthObject {
     close_approach_data: [CloseApproachData]
     is_potentially_hazardous_asteroid: boolean
 }
-interface EstimatedDiameter {
+export interface EstimatedDiameter {
   kilometers: {
     estimated_diameter_min: number;
     estimated_diameter_max: number;
@@ -13,7 +13,7 @@ interface EstimatedDiameter {
     estimated_diameter_max: number;
   };
 }
-interface CloseApproachData {
+export interface CloseApproachData {
   close_approach_date: string;
   close_approach_date_full: string;
   epoch_date_close_approach: number;
