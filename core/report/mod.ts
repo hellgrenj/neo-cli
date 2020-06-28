@@ -14,14 +14,14 @@ import { NearEarthObject } from "../_types/nearEarthObject.ts";
 import { pipe } from "../util/mod.ts";
 
 interface Report {
-    response: any;
-    closest: NearEarthObject;
-    closestDistanceInKm: number;
-    minDia: number;
-    maxDia: number;
-    kmPerSecond: number;
-    kmPerHour: number;
-  }
+  response: any;
+  closest: NearEarthObject;
+  closestDistanceInKm: number;
+  minDia: number;
+  maxDia: number;
+  kmPerSecond: number;
+  kmPerHour: number;
+}
 /** 
 takes a response from the NEO WS API and returns a report
 @param {any} response - the API Response
@@ -32,6 +32,7 @@ export const createReport = (
 ): string => {
   return pipe(constructReport, formatReport)(response);
 };
+
 const constructReport = (response: any): Report => {
   const closest = closestToEarth(response.near_earth_objects);
 
