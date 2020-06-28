@@ -1,2 +1,2 @@
-import { displayMenu } from "./shell/cli.ts";
-await displayMenu()
+import { nearEarthObjectsBetweenDates } from "./shell/cli.ts";
+await nearEarthObjectsBetweenDates()
