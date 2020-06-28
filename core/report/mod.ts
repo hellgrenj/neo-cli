@@ -80,7 +80,7 @@ The closest one passed just ${
     )
   } scandinavian miles)
 thats like driving thru Sweden ${
-    c.green(timesThruSweden(report.closestDistanceInKm).toString())
+    c.green(formatNumberString(timesThruSweden(report.closestDistanceInKm)))
   } times
             
 its estimated to be between ${c.green(report.minDia.toString())} and ${
