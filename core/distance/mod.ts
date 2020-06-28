@@ -1,20 +1,22 @@
+import { NearEarthObject } from "../_types/nearEarthObject.ts";
+
 /** 
 returns the near earth object that passes closest to earth
-@param {any} neos - the response object from the NASA NEO API
-@returns {number} - the near earth object (parsed from the response)
+@param {any} apiResponseObject - the response object from the NASA NEO API
+@returns {NearEarthObject} - the near earth object (parsed from the response)
 */
-export const closestToEarth = (neos: any): any => {
-  return neos
-    ? Object.values(neos).flat()
-      .reduce((closest: any, current: any) => {
-        return (Math.round(
-          closest.close_approach_data[0].miss_distance.kilometers,
-        )) <
-          Math.round(current.close_approach_data[0].miss_distance.kilometers)
-          ? closest
-          : current;
-      })
-    : [];
+export const closestToEarth = (apiResponseObject: any): NearEarthObject => {
+  const neos = apiResponseObject
+    ? Object.values(apiResponseObject).flat() as NearEarthObject[]
+    : [] as NearEarthObject[];
+  return neos.reduce((closest: NearEarthObject, current: NearEarthObject) => {
+    return (Math.round(
+      closest.close_approach_data[0].miss_distance.kilometers,
+    )) <
+      Math.round(current.close_approach_data[0].miss_distance.kilometers)
+      ? closest
+      : current;
+  });
 };
 /** 
 converts kilometers to scandinavian miles (mil)
