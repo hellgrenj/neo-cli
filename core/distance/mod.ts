@@ -1,4 +1,5 @@
 import { NearEarthObject } from "../_types/nearEarthObject.ts";
+import { pipe, extractNeos } from "../util/mod.ts";
 
 /** 
 returns the near earth object that passes closest to earth
@@ -6,9 +7,9 @@ returns the near earth object that passes closest to earth
 @returns {NearEarthObject} - the near earth object (parsed from the response)
 */
 export const closestToEarth = (apiResponseObject: any): NearEarthObject => {
-  const neos = apiResponseObject
-    ? Object.values(apiResponseObject).flat() as NearEarthObject[]
-    : [] as NearEarthObject[];
+  return pipe(extractNeos, reduceClosest)(apiResponseObject);
+};
+const reduceClosest = (neos: NearEarthObject[]): NearEarthObject => {
   return neos.reduce((closest: NearEarthObject, current: NearEarthObject) => {
     return (Math.round(
       closest.close_approach_data[0].miss_distance.kilometers,

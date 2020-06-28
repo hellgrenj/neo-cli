@@ -1,4 +1,5 @@
 import { NearEarthObject } from "../_types/nearEarthObject.ts";
+import { pipe, extractNeos } from "../util/mod.ts";
 
 /** 
 returns number of hazardous objects 
@@ -6,9 +7,9 @@ returns number of hazardous objects
 @returns {number} - number of hazardous objects
 */
 export const numberOfHazardousObjects = (apiResponseObject: any): number => {
-  const neos = apiResponseObject
-    ? Object.values(apiResponseObject).flat() as NearEarthObject[]
-    : [] as NearEarthObject[];
+  return pipe(extractNeos, filterPotentiallyHazardous)(apiResponseObject);
+};
+const filterPotentiallyHazardous = (neos: NearEarthObject[]): number => {
   return neos.filter((n: any) => n.is_potentially_hazardous_asteroid).length;
 };
 /** 
