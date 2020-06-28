@@ -13,20 +13,41 @@ import { relativeVelocity } from "../core/velocity/mod.ts";
 
 const API_KEY = Deno.env.get("API_KEY") ? Deno.env.get("API_KEY") : "DEMO_KEY";
 
+export const run = async () => {
+  const option = Deno.args[0];
+  switch (option) {
+    case "--between-dates":
+      await nearEarthObjectsBetweenDates();
+      break;
+    case "--help":
+      console.log(
+        "pass in arguments --between-date <startDate in YYYY-MM-DD> <endDate in YYYY-MM-DD>",
+      );
+      Deno.exit(0);
+      break;
+    default:
+      console.log(`only supported arguments are --between-dates and --help
+        `);
+      Deno.exit(1);
+      break;
+  }
+};
 export const nearEarthObjectsBetweenDates = async () => {
   console.clear();
+  printHeaderSync(`NEO's between dates`);
   console.log(c.gray(`(using API_KEY ${API_KEY})`));
-  printHeaderSync(`(a) NEO's between dates`);
-  const startDate = Deno.args[0];
-  const endDate = Deno.args[1];
-  console.log(c.gray(`fetching near earth objects between ${startDate} and ${endDate}`))
+  const startDate = Deno.args[1];
+  const endDate = Deno.args[2];
+  console.log(
+    c.gray(`fetching near earth objects between ${startDate} and ${endDate}`),
+  );
   const url =
     `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=${API_KEY}`;
   const res = await fetch(url);
   const response = await res.json();
   if (res.status !== 200) {
-    await printWarning("error");
-    await printWarning(response.error_message);
+    console.error("error");
+    console.error(response.error_message);
     console.log(res);
     Deno.exit();
   }
@@ -89,11 +110,6 @@ this object (the closest one) is ${
 
 const printPrettyNumber = (n: number): string => {
   return n.toString().replace(/(\d)(?=(\d{3})+$)/g, "$1 ");
-};
-const printWarning = async (info: string) => {
-  await Deno.stdout.write(
-    new TextEncoder().encode(c.yellow(c.bgBlack(info + "\n"))),
-  );
 };
 const printHeaderSync = (header: string) => {
   const stars = header.split("").map((_) => "*").join("");

@@ -1,2 +1,2 @@
-import { nearEarthObjectsBetweenDates } from "./shell/cli.ts";
-await nearEarthObjectsBetweenDates()
+import { run } from "./shell/cli.ts";
+await run()
