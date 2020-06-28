@@ -24,17 +24,14 @@ export const run = async () => {
         "pass in arguments --between-date <startDate in YYYY-MM-DD> <endDate in YYYY-MM-DD>",
       );
       Deno.exit(0);
-      break;
     default:
       console.log(`only supported arguments are --between-dates and --help
         `);
       Deno.exit(1);
-      break;
   }
 };
 export const nearEarthObjectsBetweenDates = async () => {
   console.clear();
-  printHeaderSync(`NEO's between dates`);
   console.log(c.gray(`(using API_KEY ${API_KEY})`));
   const startDate = Deno.args[1];
   const endDate = Deno.args[2];
@@ -65,7 +62,6 @@ export const nearEarthObjectsBetweenDates = async () => {
   const [kmPerSecond, kmPerHour] = relativeVelocity(
     closestNearEarthObjectInResponse,
   );
-  console.log("");
   console.log(
     `In total ${
       c.green(response.element_count.toString())
@@ -110,10 +106,4 @@ this object (the closest one) is ${
 
 const printPrettyNumber = (n: number): string => {
   return n.toString().replace(/(\d)(?=(\d{3})+$)/g, "$1 ");
-};
-const printHeaderSync = (header: string) => {
-  const stars = header.split("").map((_) => "*").join("");
-  console.log(stars);
-  console.log(header);
-  console.log(stars);
 };
