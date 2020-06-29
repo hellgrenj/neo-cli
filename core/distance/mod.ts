@@ -49,3 +49,14 @@ export const closerThanHighscore = (
   return Math.round(current.close_approach_data[0].miss_distance.kilometers) <
     Math.round(highscore.close_approach_data[0].miss_distance.kilometers);
 };
+
+/** 
+returns close approach full date with timezone explanation
+@param {NearEarthObject} neo
+@returns {string} - close approach full date with timezone explanation
+*/
+export const closeApproachFullDate = (neo: NearEarthObject): string => {
+  return `${
+    neo.close_approach_data[0].close_approach_date_full
+  } (TDB = UTC + 64 seconds approx)`;
+};

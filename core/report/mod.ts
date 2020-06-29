@@ -2,6 +2,7 @@ import {
   kilometersToScandinavianMiles,
   timesThruSweden,
   closestToEarth,
+  closeApproachFullDate,
 } from "../distance/mod.ts";
 import { estimatedDiameterInMeters } from "../size/mod.ts";
 import { relativeVelocity } from "../velocity/mod.ts";
@@ -10,17 +11,20 @@ import {
   numberOfHazardousObjects,
   consideredPotentiallyHazardous,
 } from "../hazard/mod.ts";
-import { NearEarthObject } from "../_types/nearEarthObject.ts";
 import { pipe } from "../util/mod.ts";
 
 interface Report {
-  response: any;
-  closest: NearEarthObject;
   closestDistanceInKm: number;
   minDia: number;
   maxDia: number;
   kmPerSecond: number;
   kmPerHour: number;
+  closeApproachDate: string;
+  scandinavanMiles: number;
+  timesSwedensLength: number;
+  hazardous: boolean;
+  noHazardous: number;
+  noObjects: number;
 }
 /** 
 takes a response from the NEO WS API and returns a report
@@ -45,55 +49,60 @@ const constructReport = (response: any): Report => {
   const [kmPerSecond, kmPerHour] = relativeVelocity(
     closest,
   );
+  const closeApproachDate = closeApproachFullDate(closest);
+  const scandinavanMiles = kilometersToScandinavianMiles(closestDistanceInKm);
+  const timesSwedensLength = timesThruSweden(closestDistanceInKm);
+  const hazardous = consideredPotentiallyHazardous(closest);
+  const noHazardous = numberOfHazardousObjects(response.near_earth_objects);
+  const noObjects = response.element_count;
+
   return {
-    response,
-    closest,
     closestDistanceInKm,
     minDia,
     maxDia,
     kmPerSecond,
     kmPerHour,
+    closeApproachDate,
+    scandinavanMiles,
+    timesSwedensLength,
+    hazardous,
+    noHazardous,
+    noObjects,
   } as Report;
 };
 const formatReport = (
   report: Report,
 ): string => {
   return `In total ${
-    c.green(report.response.element_count.toString())
+    c.green(report.noObjects.toString())
   } objects where found and ${
-    c.red(
-      numberOfHazardousObjects(
-        report.response.near_earth_objects,
-      ).toString(),
-    )
+    c.red(report.noHazardous.toString())
   } where considered hazardous.
             
-The closest one passed just ${
+The closest one passed/will pass just ${
     c.yellow(
       formatNumberString(report.closestDistanceInKm),
     )
   } km from earth (${
     c.yellow(
-      formatNumberString(kilometersToScandinavianMiles(
-        report.closestDistanceInKm,
-      )),
+      formatNumberString(report.scandinavanMiles),
     )
   } scandinavian miles)
 thats like driving thru Sweden ${
-    c.green(formatNumberString(timesThruSweden(report.closestDistanceInKm)))
-  } times
+    c.green(formatNumberString(report.timesSwedensLength))
+  } times.
+
+The exact date and time for this close approach is ${c.cyan(report.closeApproachDate)}
             
-its estimated to be between ${c.green(report.minDia.toString())} and ${
+This object is estimated to be between ${c.green(report.minDia.toString())} and ${
     c.green(report.maxDia.toString())
   } meters in diameter travelling at a speed (relative to us) 
 of ${c.yellow(formatNumberString(report.kmPerSecond))} km per second (${
     c.yellow(formatNumberString(report.kmPerHour))
   } km per hour)
             
-this object (the closest one) is ${
-    consideredPotentiallyHazardous(report.closest)
-      ? c.red("(!)")
-      : c.green("NOT")
+This object is ${
+    report.hazardous ? c.red("(!)") : c.green("NOT")
   } considered potentially hazardous
             `.trim();
 };
