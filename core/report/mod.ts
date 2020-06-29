@@ -92,7 +92,7 @@ thats like driving thru Sweden ${
     c.green(formatNumberString(report.timesSwedensLength))
   } times.
 
-The exact date and time for this close approach is ${
+Date and time for this close approach is ${
     c.cyan(report.closeApproachDate)
   }
             
