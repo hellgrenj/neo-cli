@@ -24,7 +24,7 @@ export const run = async () => {
 };
 export const nearEarthObjectsBetweenDates = async () => {
   console.clear();
-  console.log(c.gray(`(using API_KEY ${API_KEY})`));
+  console.log(c.gray(`(${API_KEY == 'DEMO_KEY' ? 'using demo API key' : 'using API key from env variable'})`));
   const startDate = Deno.args[1];
   const endDate = Deno.args[2];
   const response = await fetchNearEarthObjects(startDate, endDate);
