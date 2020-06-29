@@ -7,7 +7,11 @@ returns the velocity (relative travelling speed) in kilometers per second and ki
 */
 export const relativeVelocity = (neo: NearEarthObject): [number, number] => {
   return [
-    Math.round(neo.close_approach_data[0].relative_velocity.kilometers_per_second),
-    Math.round(neo.close_approach_data[0].relative_velocity.kilometers_per_hour),
+    Math.round(
+      neo.close_approach_data[0].relative_velocity.kilometers_per_second,
+    ),
+    Math.round(
+      neo.close_approach_data[0].relative_velocity.kilometers_per_hour,
+    ),
   ];
 };

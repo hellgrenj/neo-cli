@@ -92,9 +92,13 @@ thats like driving thru Sweden ${
     c.green(formatNumberString(report.timesSwedensLength))
   } times.
 
-The exact date and time for this close approach is ${c.cyan(report.closeApproachDate)}
+The exact date and time for this close approach is ${
+    c.cyan(report.closeApproachDate)
+  }
             
-This object is estimated to be between ${c.green(report.minDia.toString())} and ${
+This object is estimated to be between ${
+    c.green(report.minDia.toString())
+  } and ${
     c.green(report.maxDia.toString())
   } meters in diameter travelling at a speed (relative to us) 
 of ${c.yellow(formatNumberString(report.kmPerSecond))} km per second (${

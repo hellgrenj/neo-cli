@@ -1,7 +1,7 @@
 export interface NearEarthObject {
-    estimated_diameter: EstimatedDiameter
-    close_approach_data: [CloseApproachData]
-    is_potentially_hazardous_asteroid: boolean
+  estimated_diameter: EstimatedDiameter;
+  close_approach_data: [CloseApproachData];
+  is_potentially_hazardous_asteroid: boolean;
 }
 export interface EstimatedDiameter {
   kilometers: {
