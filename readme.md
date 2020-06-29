@@ -1,7 +1,5 @@
 # NEO-CLI
 
-### status: work in progress
-
 ## what and why
 This is a demonstration of [FLP (functional light programming)](https://github.com/getify/Functional-Light-JS) coined by [Kyle Simpson](https://twitter.com/getify) paired with the pattern [Functional Core, Imperative Shell](https://www.destroyallsoftware.com/screencasts/catalog/functional-core-imperative-shell) coined by [Gary Bernhardt](https://twitter.com/garybernhardt). This can be a good approach to developing software in a number of different cases. Forexample when developing (micro)services in distributed systems or components in domain partitioned architectures (like the modular monolith).
 

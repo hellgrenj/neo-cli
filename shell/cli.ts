@@ -17,7 +17,7 @@ export const run = async () => {
       );
       Deno.exit(0);
     default:
-      console.log(`only supported arguments are --between-dates and --help
+      console.log(`the only supported arguments are --between-dates and --help
         `);
       Deno.exit(1);
   }
@@ -25,11 +25,13 @@ export const run = async () => {
 export const nearEarthObjectsBetweenDates = async () => {
   console.clear();
   console.log(
-    c.gray(`(${
-      API_KEY == "DEMO_KEY"
-        ? "using demo API key"
-        : "using API key from env variable"
-    })`),
+    c.gray(
+      `(${
+        API_KEY == "DEMO_KEY"
+          ? "using demo API key"
+          : "using API key from env variable"
+      })`,
+    ),
   );
   const startDate = Deno.args[1];
   const endDate = Deno.args[2];

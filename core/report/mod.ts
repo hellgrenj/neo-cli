@@ -92,9 +92,7 @@ thats like driving thru Sweden ${
     c.green(formatNumberString(report.timesSwedensLength))
   } times.
 
-Date and time for this close approach is ${
-    c.cyan(report.closeApproachDate)
-  }
+Date and time for this close approach is ${c.cyan(report.closeApproachDate)}
             
 This object is estimated to be between ${
     c.green(report.minDia.toString())
