@@ -24,8 +24,11 @@ First you need to install [Deno](https://deno.land/) then you can do one of the 
 ``` deno run --allow-env --allow-net --allow-read --allow-write mod.ts --between-dates 2020-08-01 2020-08-01 ```  
 (Perhaps create a start script)  
 * With Deno you can also execute remote scripts, to do that run:  
-``` left to do ```   
+``` deno run --allow-env --allow-net --allow-read --allow-write https://raw.githubusercontent.com/hellgrenj/neo-cli/1.0/mod.ts --between-dates 2020-08-01 2020-08-01 ```   
 (Also checkout the Deno install functionality)  
+
+* You can also Install the "neo" command in your PATH  
+``` deno install --allow-env --allow-net --allow-read --allow-write -n neo https://raw.githubusercontent.com/hellgrenj/neo-cli/1.0/mod.ts ```
 
 ## test
 run tests with ```deno test```
