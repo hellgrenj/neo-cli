@@ -13,7 +13,7 @@ export const run = async () => {
       break;
     case "--help":
       console.log(
-        "pass in arguments --between-date <startDate in YYYY-MM-DD> <endDate in YYYY-MM-DD>",
+        "pass in arguments --between-dates <startDate in YYYY-MM-DD> <endDate in YYYY-MM-DD>",
       );
       Deno.exit(0);
     default:
