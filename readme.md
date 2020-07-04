@@ -15,8 +15,6 @@ the entrypoint is mod.ts which only runs the cli app
 **shell/** this is our Imperative Shell, this is where we deal with side-effects we cant get around  (i.e network IO, database calls etc)  
 **core/**  this is our Functional Core,this is the FLP code where we only have pure functions and immutable data etc...  
 
-Read more about this setup here (link to blog post coming soon)
-
 ## run
 First you need to install [Deno](https://deno.land/) then you can do one of the following:  
 
