@@ -1,14 +1,11 @@
 import { NearEarthObject } from "../core/_types/nearEarthObject.ts";
 import { closerThanHighscore } from "../core/distance/mod.ts";
 import * as c from "https://deno.land/std@v0.58.0/fmt/colors.ts";
-import * as path from "https://deno.land/std@0.57.0/path/mod.ts";
 
-const __dirname = path.dirname(path.fromFileUrl(import.meta.url));
-const FILE_PATH_NAME = `${__dirname}/highscore.json`;
+const FILE_PATH_NAME = `./highscore.json`;
 export const checkHighscore = async (
   closestNearEarthObjectInResponse: NearEarthObject,
 ) => {
-  console.log(FILE_PATH_NAME)
   const currHighscore = await load();
   if (currHighscore) {
     const newTitleHolder = closerThanHighscore(
