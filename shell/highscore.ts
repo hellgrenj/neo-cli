@@ -8,6 +8,7 @@ const FILE_PATH_NAME = `${__dirname}/highscore.json`;
 export const checkHighscore = async (
   closestNearEarthObjectInResponse: NearEarthObject,
 ) => {
+  console.log(FILE_PATH_NAME)
   const currHighscore = await load();
   if (currHighscore) {
     const newTitleHolder = closerThanHighscore(
