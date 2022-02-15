@@ -1,4 +1,4 @@
-import * as c from "https://deno.land/std@v0.58.0/fmt/colors.ts";
+import * as c from "https://deno.land/std@v0.125.0/fmt/colors.ts";
 import { closestToEarth } from "../core/distance/mod.ts";
 import { createReport } from "../core/report/mod.ts";
 import { checkHighscore } from "./highscore.ts";

@@ -6,7 +6,7 @@ import {
 } from "../distance/mod.ts";
 import { estimatedDiameterInMeters } from "../size/mod.ts";
 import { relativeVelocity } from "../velocity/mod.ts";
-import * as c from "https://deno.land/std@v0.58.0/fmt/colors.ts";
+import * as c from "https://deno.land/std@v0.125.0/fmt/colors.ts";
 import {
   numberOfHazardousObjects,
   consideredPotentiallyHazardous,

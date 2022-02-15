@@ -1,6 +1,6 @@
 import { NearEarthObject } from "../core/_types/nearEarthObject.ts";
 import { closerThanHighscore } from "../core/distance/mod.ts";
-import * as c from "https://deno.land/std@v0.58.0/fmt/colors.ts";
+import * as c from "https://deno.land/std@v0.125.0/fmt/colors.ts";
 
 const FILE_PATH_NAME = `./highscore.json`;
 export const checkHighscore = async (
