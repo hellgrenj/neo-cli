@@ -2,11 +2,11 @@ import { NearEarthObject } from "../_types/nearEarthObject.ts";
 
 /** 
 takes a list of functions to pipe and returns a function that executes the pipe
-@param {any[]} fns - list of functions
-@returns {any} - the pipe function 
+@param {Function[]} fns - list of functions
+@returns {Function} - the pipe function 
 */
-export const pipe = (...fns: any[]) => {
-  return (result: any) => {
+export const pipe = (...fns: Function[]) => {
+  return (result: Function) => {
     return [...fns].reduce((result, fn) => {
       return fn(result);
     }, result);
