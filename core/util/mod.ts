@@ -1,24 +1,17 @@
 import { NearEarthObject } from "../_types/nearEarthObject.ts";
+import { APIResponse } from "../_types/apiResponseObject.ts";
 
-/** 
-takes a list of functions to pipe and returns a function that executes the pipe
-@param {Function[]} fns - list of functions
-@returns {any} - the pipe function 
-*/
+
 export const pipe = (...fns: Function[]) => {
-  return (result: any) => {
+  return <T>(result: T) => {
     return [...fns].reduce((result, fn) => {
       return fn(result);
     }, result);
   };
 };
-/** 
-extracts a list of near earth objects from an API response
-@param {any} apiResponseObject - the response object from the NASA NEO API
-@returns {NearEarthObject[]} - the near earth objects 
-*/
-export const extractNeos = (apiResponseObject: any): NearEarthObject[] => {
-  return apiResponseObject
-    ? Object.values(apiResponseObject).flat() as NearEarthObject[]
+
+export const extractNeos = (apiResponse: APIResponse): NearEarthObject[] => {
+  return apiResponse
+    ? Object.values(apiResponse).flat() as NearEarthObject[]
     : [] as NearEarthObject[];
 };
